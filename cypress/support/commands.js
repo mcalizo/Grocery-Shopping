@@ -26,7 +26,7 @@
 
 Cypress.Commands.add("LoginAPI",() =>{
 
-    cy.request("POST", "https://rahulshetty.com/client/",
+    cy.request("POST", "https://rahulshettyacademy.com/api/ecom/auth/login",
     {"userEmail": "cipox58053@mainmile.com","userPassword": "Password01"}).
     then(function(response){
 
