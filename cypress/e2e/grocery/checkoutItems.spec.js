@@ -54,7 +54,16 @@ describe('Grocery', () => {
           });
         cy.get('.products-wrapper .wrapperTwo a[href="#/"]').should('not.have.attr', 'disabled');
 
-    })        
+    })  
+    
+    it.only('Verify all the item in the list', ()=> {
+
+      Listing.searchBox().should('exist')
+      cy.get('.product:visible').should('have.length', 29)
+      cy.get("div[class='container'] header .brand.greenLogo").contains('GREEN').should('be.visible')
+
+    })
+ 
 
     })
 
