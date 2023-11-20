@@ -56,14 +56,47 @@ describe('Grocery', () => {
 
     })  
     
-    it.only('Verify all the item in the list', ()=> {
-
-      Listing.searchBox().should('exist')
-      cy.get('.product:visible').should('have.length', 29)
-      cy.get("div[class='container'] header .brand.greenLogo").contains('GREEN').should('be.visible')
+    
+ 
 
     })
- 
+
+    it('Verify all the item in the list', ()=> {
+
+      Listing.searchBox().should('exist')
+      cy.get('.product:visible').should('have.length', 30)
+      cy.get("div[class='container'] header .brand.greenLogo").contains('GREEN').should('be.visible')
+      cy.get('.products').find('.product-name').invoke('text').then((productNames) => {        
+        cy.log(productNames);
+        expect(productNames).to.include('Brocolli - 1 Kg');
+        expect(productNames).to.include('Cauliflower - 1 Kg');
+      
+      
+      });
+      cy.contains('.product-name', 'Brocolli - 1 Kg') // Find the product by name
+      .siblings('.stepper-input') // Navigate to the stepper-input div
+      .find('.increment') // Find the '+' button within stepper-input
+      .click();
+    
+    // Verify if the quantity value increases from 1 to 2
+    cy.contains('.product-name', 'Brocolli - 1 Kg')
+      .siblings('.stepper-input')
+      .find('.quantity')
+      .should('have.value', '2');
+
+      cy.contains('.product-name', 'Brocolli - 1 Kg') // Find the product by name
+      .siblings('.product-action') // Navigate to the product-action div
+      .find('button') // Find the "ADD TO CART" button within product-action
+      .click({force:true});
+      cy.get('.cart-items .cart-item').its('length').should('be.gte', 1);
+    cy.get('.cart-info strong')
+  .eq(1) // Use eq(1) to select the second strong element, which contains the price
+  .invoke('text')
+  .then((text) => {
+    const totalPrice = parseInt(text, 10);
+   
+    expect(totalPrice).to.be.gte(240);
+  });
 
     })
 
